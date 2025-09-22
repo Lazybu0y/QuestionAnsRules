@@ -1,0 +1,75 @@
+{
+  "component": {
+    "type": "question",
+    "id": "q003",
+    "version": "1.1.0",
+    "lastModified": "2024-01-15T08:15:00Z",
+    "author": "product-team",
+    "changelog": [
+      {
+        "version": "1.1.0",
+        "changes": ["Added enterprise-specific options", "Updated help text"],
+        "date": "2024-01-15T08:15:00Z"
+      },
+      {
+        "version": "1.0.0",
+        "changes": ["Initial creation"],
+        "date": "2024-01-10T10:00:00Z"
+      }
+    ]
+  },
+  "question": {
+    "id": "q003",
+    "type": "single-choice",
+    "level": 1,
+    "text": "What is your approximate company size?",
+    "description": "This helps us recommend the right tier and feature set for your organization size.",
+    "metadata": {
+      "category": "sizing",
+      "estimatedTime": 10,
+      "helpText": "Select the range that best matches your current employee count",
+      "tags": ["business", "company-size", "tier-qualification"],
+      "businessImpact": "high",
+      "analytics": {
+        "segmentBy": "company_size",
+        "correlateToPricing": true
+      }
+    }
+  },
+  "answerSet": {
+    "reference": "company-sizes",
+    "validation": {
+      "required": true,
+      "customRules": ["validate_realistic_size"]
+    }
+  },
+  "display": {
+    "layout": "vertical",
+    "showProgress": true,
+    "highlightRecommended": true,
+    "customCSS": "company-size-options"
+  },
+  "navigation": {
+    "allowBack": true,
+    "allowSkip": false,
+    "autoAdvance": false,
+    "nextRules": ["nav_size_based_routing"]
+  },
+  "conditions": {
+    "showIf": "answers.q001?.value === 'business' || answers.q001?.value === 'enterprise'",
+    "requiredPrevious": ["q001"],
+    "blockingConditions": []
+  },
+  "businessLogic": {
+    "tierSuggestions": {
+      "enabled": true,
+      "algorithm": "size_based_mapping",
+      "showPreview": true
+    },
+    "pricingHints": {
+      "enabled": true,
+      "showRange": true,
+      "currency": "USD"
+    }
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "navigationRules": {
+    "nav_rule_004": {
+      "id": "nav_rule_004",
+      "name": "Small Company to Feature Focus",
+      "fromQuestion": "q003",
+      "level": 1,
+      "priority": 10,
+      "condition": {
+        "expression": "parseInt(answer.value.split('-')[1] || answer.value.split('+')[0]) <= 50",
+        "description": "Small companies (<=50 employees) get simplified feature selection"
+      },
+      "actions": [
+        {
+          "type": "navigate",
+          "target": "q008",
+          "data": {
+            "context": {
+              "companySize": "small",
+              "simplifiedFlow": true
+            },
+            "preloadApiAnswers": ["basic_features"]
+          }
+        }
+      ],
+      "metadata": {
+        "category": "size-based-routing",
+        "simplificationLevel": "high"
+      }
+    },
+    "nav_rule_005": {
+      "id": "nav_rule_005",
+      "name": "Large Company to Detailed Assessment",
+      "fromQuestion": "q003",
+      "level": 1,
+      "priority": 9,
+      "condition": {
+        "expression": "parseInt(answer.value.split('-')[0]) > 50",
+        "description": "Larger companies get comprehensive assessment"
+      },
+      "actions": [
+        {
+          "type": "navigate",
+          "target": "q009",
+          "data": {
+            "context": {
+              "companySize": "large",
+              "comprehensiveFlow": true
+            },
+            "preloadApiAnswers": ["enterprise_features", "compliance_requirements"]
+          }
+        }
+      ],
+      "metadata": {
+        "category": "size-based-routing",
+        "complexityLevel": "high"
+      }
+    },
+    "nav_rule_006": {
+      "id": "nav_rule_006",
+      "name": "Personal Use Case to Feature Selection",
+      "fromQuestion": "q004",
+      "level": 1,
+      "priority": 8,
+      "condition": {
+        "expression": "answer && answer.length >= 10",
+        "description": "Valid use case description leads to feature selection"
+      },
+      "actions": [
+        {
+          "type": "execute_preprocessing",
+          "processor": "nlp_use_case_analyzer",
+          "data": {
+            "text": "{{answer}}",
+            "extractKeywords": true,
+            "sentimentAnalysis": true
+          }
+        },
+        {
+          "type": "navigate",
+          "target": "q010",
+          "data": {
+            "context": {
+              "useCaseAnalyzed": true,
+              "userType": "descriptive"
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "category": "text-analysis-routing",
+        "requiresNLP": true
+      }
+    },
+    "nav_rule_007": {
+      "id": "nav_rule_007",
+      "name": "Budget-Based Feature Filtering",
+      "fromQuestion": "q005",
+      "level": 1,
+      "priority": 7,
+      "condition": {
+        "expression": "answer.value !== 'flexible'",
+        "description": "Fixed budget answers trigger filtered feature selection"
+      },
+      "actions": [
+        {
+          "type": "set_context",
+          "data": {
+            "budgetConstraint": "{{answer.value}}",
+            "filterFeaturesByBudget": true
+          }
+        },
+        {
+          "type": "navigate",
+          "target": "q011",
+          "data": {
+            "apiParameters": {
+              "maxBudget": "{{answer.metadata.maxTier}}"
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "category": "budget-filtering",
+        "affectsRecommendations": true
+      }
+    }
+  },
+  "conditionalLogic": {
+    "multi_path_resolution": {
+      "rules": ["nav_rule_004", "nav_rule_005"],
+      "condition": "mutually_exclusive",
+      "conflictResolution": "priority_order"
+    },
+    "context_dependent": {
+      "rules": ["nav_rule_007"],
+      "requires": ["budget_context"],
+      "optional": true
+    }
+  },
+  "performance": {
+    "ruleCompilation": true,
+    "cacheComputedResults": true,
+    "parallelEvaluation": ["nav_rule_004", "nav_rule_005"]
+  },
+  "metadata": {
+    "level": 1,
+    "ruleCount": 4,
+    "version": "1.0.0",
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  }
+}

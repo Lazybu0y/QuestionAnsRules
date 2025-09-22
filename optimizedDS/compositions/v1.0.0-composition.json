@@ -1,0 +1,162 @@
+{
+  "composition": {
+    "version": "1.0.0",
+    "questionnaireId": "product-recommendation",
+    "name": "Product Recommendation v1.0.0",
+    "description": "Initial release with basic business and personal flows",
+    "created": "2024-01-15T00:00:00Z",
+    "author": "product-team"
+  },
+  "components": {
+    "questions": [
+      {
+        "ref": "components/questions/q001.json",
+        "version": "1.0.0",
+        "priority": 1,
+        "required": true,
+        "overrides": {}
+      },
+      {
+        "ref": "components/questions/q002.json",
+        "version": "1.0.0",
+        "priority": 2,
+        "required": true,
+        "conditions": ["business-flow"]
+      },
+      {
+        "ref": "components/questions/q003.json",
+        "version": "1.0.0",
+        "priority": 3,
+        "required": false,
+        "conditions": ["business-users"]
+      },
+      {
+        "ref": "components/questions/q004.json",
+        "version": "1.0.0",
+        "priority": 3,
+        "required": false,
+        "conditions": ["personal-users"]
+      },
+      {
+        "ref": "components/questions/q005.json",
+        "version": "1.0.0",
+        "priority": 4,
+        "required": false,
+        "conditions": ["budget-assessment"]
+      }
+    ],
+    "answerSets": [
+      {
+        "ref": "components/answer-sets/business-types.json",
+        "version": "1.0.0",
+        "usedBy": ["q001"],
+        "preload": true
+      },
+      {
+        "ref": "components/answer-sets/business-challenges.json",
+        "version": "1.0.0",
+        "usedBy": ["q002"],
+        "preload": false
+      },
+      {
+        "ref": "components/answer-sets/company-sizes.json",
+        "version": "1.0.0",
+        "usedBy": ["q003"],
+        "preload": false
+      },
+      {
+        "ref": "components/answer-sets/budget-ranges.json",
+        "version": "1.0.0",
+        "usedBy": ["q005"],
+        "preload": false
+      }
+    ],
+    "rules": {
+      "navigation": [
+        {
+          "ref": "components/rules/navigation/business-flow-rules.json",
+          "version": "1.0.0",
+          "scope": "business-flow",
+          "priority": 1
+        },
+        {
+          "ref": "components/rules/navigation/personal-flow-rules.json",
+          "version": "1.0.0",
+          "scope": "personal-flow",
+          "priority": 1
+        }
+      ],
+      "evaluation": [
+        {
+          "ref": "components/rules/evaluation/scoring-rules.json",
+          "version": "1.0.0",
+          "scope": "final-evaluation",
+          "priority": 1
+        },
+        {
+          "ref": "components/rules/evaluation/step-mapping-rules.json",
+          "version": "1.0.0",
+          "scope": "step-assignment",
+          "priority": 2
+        }
+      ]
+    },
+    "flows": [
+      {
+        "ref": "components/flows/business-user-flow.json",
+        "version": "1.0.0",
+        "primary": true,
+        "userSegments": ["business", "enterprise"]
+      },
+      {
+        "ref": "components/flows/personal-user-flow.json",
+        "version": "1.0.0",
+        "primary": false,
+        "userSegments": ["personal", "startup"]
+      }
+    ]
+  },
+  "buildConfiguration": {
+    "target": "production",
+    "optimizations": [
+      "rule-compilation",
+      "answer-preloading",
+      "dead-code-elimination",
+      "asset-minification"
+    ],
+    "cacheStrategy": {
+      "static": "aggressive",
+      "dynamic": "moderate",
+      "api": "conservative"
+    },
+    "bundling": {
+      "splitByFlow": true,
+      "chunkSize": "optimal",
+      "compression": "gzip"
+    }
+  },
+  "validation": {
+    "schemaValidation": true,
+    "crossReferenceValidation": true,
+    "cyclicDependencyCheck": true,
+    "deadCodeDetection": true
+  },
+  "deployment": {
+    "environments": ["staging", "production"],
+    "rolloutStrategy": "blue-green",
+    "rollbackSupported": true,
+    "monitoringEnabled": true
+  },
+  "metadata": {
+    "buildId": "build-1704067200",
+    "gitCommit": "a1b2c3d",
+    "buildTime": "2024-01-15T10:00:00Z",
+    "approvedBy": "product-manager",
+    "testResults": {
+      "unitTests": "passed",
+      "integrationTests": "passed",
+      "loadTests": "passed",
+      "coverage": "94%"
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "registry": {
+    "name": "Rule Registry",
+    "version": "1.0.0",
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  },
+  "rules": {
+    "nav_business_org_type": {
+      "id": "nav_business_org_type",
+      "file": "components/rules/navigation/business-flow-rules.json",
+      "type": "navigation",
+      "scope": "business-flow",
+      "versions": ["1.0.0", "1.1.0"],
+      "status": "active",
+      "metadata": {
+        "category": "primary-routing",
+        "fromQuestion": "q001",
+        "targetQuestions": ["q003"],
+        "priority": 10,
+        "owner": "product-team",
+        "lastModified": "2024-01-15T09:15:00Z",
+        "testCoverage": 95,
+        "performanceImpact": "low"
+      },
+      "dependencies": {
+        "questions": ["q001"],
+        "answerSets": ["business-types"],
+        "otherRules": []
+      },
+      "usage": {
+        "compositions": ["v1.0.0-composition", "v1.1.0-composition"],
+        "flows": ["business-user-flow"],
+        "estimatedTriggerRate": "65%"
+      }
+    },
+    "nav_personal_org_type": {
+      "id": "nav_personal_org_type",
+      "file": "components/rules/navigation/personal-flow-rules.json",
+      "type": "navigation",
+      "scope": "personal-flow",
+      "versions": ["1.0.0"],
+      "status": "active",
+      "metadata": {
+        "category": "primary-routing",
+        "fromQuestion": "q001",
+        "targetQuestions": ["q004"],
+        "priority": 9,
+        "owner": "ux-team",
+        "lastModified": "2024-01-14T17:30:00Z",
+        "testCoverage": 88,
+        "performanceImpact": "low"
+      }
+    },
+    "eval_enterprise_tier": {
+      "id": "eval_enterprise_tier",
+      "file": "components/rules/evaluation/scoring-rules.json",
+      "type": "evaluation",
+      "scope": "final-scoring",
+      "versions": ["1.0.0"],
+      "status": "active",
+      "metadata": {
+        "category": "tier-assignment",
+        "resultStepIds": ["enterprise-premium"],
+        "priority": 100,
+        "owner": "sales-team",
+        "lastModified": "2024-01-15T08:45:00Z",
+        "testCoverage": 100,
+        "performanceImpact": "medium"
+      }
+    },
+    "eval_cost_optimization": {
+      "id": "eval_cost_optimization",
+      "file": "components/rules/evaluation/step-mapping-rules.json",
+      "type": "evaluation",
+      "scope": "cost-focused",
+      "versions": ["1.0.0"],
+      "status": "active",
+      "metadata": {
+        "category": "budget-optimization",
+        "resultStepIds": ["cost-optimized-business"],
+        "priority": 75,
+        "owner": "product-team",
+        "lastModified": "2024-01-15T10:30:00Z"
+      }
+    }
+  },
+  "ruleTypes": {
+    "navigation": {
+      "count": 2,
+      "description": "Rules that control question flow and navigation",
+      "averagePriority": 9.5
+    },
+    "evaluation": {
+      "count": 2,
+      "description": "Rules that evaluate final outcomes and step assignments",
+      "averagePriority": 87.5
+    }
+  },
+  "ruleCategories": {
+    "primary-routing": {
+      "rules": ["nav_business_org_type", "nav_personal_org_type"],
+      "description": "Initial routing based on organization type"
+    },
+    "tier-assignment": {
+      "rules": ["eval_enterprise_tier"],
+      "description": "Rules for assigning product tiers"
+    },
+    "budget-optimization": {
+      "rules": ["eval_cost_optimization"],
+      "description": "Cost-focused recommendations"
+    }
+  }
+}

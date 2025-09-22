@@ -1,0 +1,228 @@
+{
+  "flowGraph": {
+    "id": "product-recommendation-flow",
+    "version": "1.0.0",
+    "type": "directed_acyclic_graph",
+    "nodes": {
+      "start": {
+        "id": "start",
+        "type": "entry_point",
+        "questionId": "q001",
+        "level": 0,
+        "metadata": {
+          "isRoot": true,
+          "preloadData": ["organization_types"]
+        }
+      },
+      "q001": {
+        "id": "q001",
+        "type": "question",
+        "level": 0,
+        "outgoing": ["q002", "q003", "q004"],
+        "rules": ["nav_rule_001", "nav_rule_002"],
+        "metadata": {
+          "critical": true,
+          "branchingPoint": true
+        }
+      },
+      "q002": {
+        "id": "q002",
+        "type": "question",
+        "level": 0,
+        "outgoing": ["q005"],
+        "rules": ["nav_rule_003"],
+        "conditions": {
+          "showIf": "true",
+          "requiredPrevious": ["q001"]
+        }
+      },
+      "q003": {
+        "id": "q003",
+        "type": "question",
+        "level": 1,
+        "outgoing": ["q008", "q009"],
+        "rules": ["nav_rule_004", "nav_rule_005"],
+        "conditions": {
+          "showIf": "answers.q001?.value === 'business' || answers.q001?.value === 'enterprise'",
+          "requiredPrevious": ["q001"]
+        }
+      },
+      "q004": {
+        "id": "q004",
+        "type": "question",
+        "level": 1,
+        "outgoing": ["q010"],
+        "rules": ["nav_rule_006"],
+        "conditions": {
+          "showIf": "answers.q001?.value === 'personal' || answers.q001?.value === 'startup'",
+          "requiredPrevious": ["q001"]
+        }
+      },
+      "q005": {
+        "id": "q005",
+        "type": "question",
+        "level": 1,
+        "outgoing": ["q011"],
+        "rules": ["nav_rule_007"],
+        "conditions": {
+          "showIf": "answers.q002?.some(challenge => challenge.value === 'cost-optimization')",
+          "requiredPrevious": ["q002"]
+        }
+      },
+      "evaluation": {
+        "id": "evaluation",
+        "type": "rule_evaluation",
+        "level": -1,
+        "rules": ["final_rule_001", "final_rule_002", "final_rule_003", "final_rule_004", "final_rule_005", "final_rule_006"],
+        "metadata": {
+          "isTerminal": true,
+          "evaluationType": "final"
+        }
+      }
+    },
+    "edges": [
+      {
+        "from": "start",
+        "to": "q001",
+        "type": "automatic",
+        "weight": 1
+      },
+      {
+        "from": "q001",
+        "to": "q003",
+        "type": "conditional",
+        "condition": "nav_rule_001",
+        "weight": 10,
+        "metadata": {
+          "expectedFlow": "business_enterprise"
+        }
+      },
+      {
+        "from": "q001",
+        "to": "q004",
+        "type": "conditional",
+        "condition": "nav_rule_002",
+        "weight": 9,
+        "metadata": {
+          "expectedFlow": "personal_startup"
+        }
+      },
+      {
+        "from": "q001",
+        "to": "q002",
+        "type": "automatic",
+        "weight": 5,
+        "metadata": {
+          "defaultFlow": true
+        }
+      },
+      {
+        "from": "q002",
+        "to": "q005",
+        "type": "conditional",
+        "condition": "nav_rule_003",
+        "weight": 8
+      },
+      {
+        "from": "q003",
+        "to": "q008",
+        "type": "conditional",
+        "condition": "nav_rule_004",
+        "weight": 10,
+        "metadata": {
+          "flowType": "simplified"
+        }
+      },
+      {
+        "from": "q003",
+        "to": "q009",
+        "type": "conditional",
+        "condition": "nav_rule_005",
+        "weight": 9,
+        "metadata": {
+          "flowType": "comprehensive"
+        }
+      },
+      {
+        "from": "q004",
+        "to": "q010",
+        "type": "conditional",
+        "condition": "nav_rule_006",
+        "weight": 8
+      },
+      {
+        "from": "q005",
+        "to": "q011",
+        "type": "conditional",
+        "condition": "nav_rule_007",
+        "weight": 7
+      },
+      {
+        "from": "q008",
+        "to": "evaluation",
+        "type": "completion",
+        "weight": 1
+      },
+      {
+        "from": "q009",
+        "to": "evaluation",
+        "type": "completion",
+        "weight": 1
+      },
+      {
+        "from": "q010",
+        "to": "evaluation",
+        "type": "completion",
+        "weight": 1
+      },
+      {
+        "from": "q011",
+        "to": "evaluation",
+        "type": "completion",
+        "weight": 1
+      }
+    ],
+    "paths": {
+      "enterprise_fast_track": {
+        "nodes": ["start", "q001", "q003", "q009", "evaluation"],
+        "description": "Large enterprise users - comprehensive assessment",
+        "estimatedDuration": 240,
+        "expectedUsers": "25%"
+      },
+      "business_standard": {
+        "nodes": ["start", "q001", "q003", "q008", "evaluation"],
+        "description": "Small-medium business - simplified flow",
+        "estimatedDuration": 180,
+        "expectedUsers": "40%"
+      },
+      "startup_personal": {
+        "nodes": ["start", "q001", "q004", "q010", "evaluation"],
+        "description": "Startup and personal users",
+        "estimatedDuration": 150,
+        "expectedUsers": "30%"
+      },
+      "cost_conscious": {
+        "nodes": ["start", "q001", "q002", "q005", "q011", "evaluation"],
+        "description": "Budget-focused users",
+        "estimatedDuration": 200,
+        "expectedUsers": "15%"
+      }
+    },
+    "optimization": {
+      "preloadStrategy": "critical_path",
+      "cacheWarmup": ["q001", "q003", "q004"],
+      "parallelization": {
+        "enabled": true,
+        "maxConcurrent": 3
+      }
+    }
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "nodeCount": 8,
+    "edgeCount": 11,
+    "pathCount": 4,
+    "maxDepth": 2,
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  }
+}

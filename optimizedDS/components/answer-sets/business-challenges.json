@@ -1,0 +1,154 @@
+{
+  "component": {
+    "type": "answer-set",
+    "id": "business-challenges",
+    "version": "1.0.0",
+    "lastModified": "2024-01-14T15:30:00Z",
+    "author": "ux-team"
+  },
+  "answerSet": {
+    "id": "business-challenges",
+    "name": "Business Challenges",
+    "description": "Common challenges organizations face",
+    "type": "static",
+    "metadata": {
+      "category": "assessment",
+      "sortStrategy": "severity_then_frequency",
+      "allowCustom": true,
+      "mutuallyExclusive": false,
+      "maxSelections": 5,
+      "minSelections": 1
+    }
+  },
+  "options": [
+    {
+      "id": "challenge_scalability",
+      "value": "scalability",
+      "label": "Scalability Issues",
+      "description": "Current solution doesn't scale with business growth",
+      "metadata": {
+        "severity": "high",
+        "category": "technical",
+        "frequency": "common",
+        "solutionCategories": ["infrastructure", "architecture"],
+        "recommendedTiers": ["business-plus", "enterprise"],
+        "weight": 0.9
+      },
+      "implications": {
+        "questionsToAdd": ["performance-requirements", "growth-projections"],
+        "featuresRequired": ["auto-scaling", "load-balancing"],
+        "pricingImpact": "increase"
+      }
+    },
+    {
+      "id": "challenge_cost_optimization",
+      "value": "cost-optimization",
+      "label": "Cost Optimization",
+      "description": "Need to reduce operational costs and improve efficiency",
+      "metadata": {
+        "severity": "medium",
+        "category": "financial",
+        "frequency": "very-common",
+        "solutionCategories": ["cost-management", "efficiency"],
+        "recommendedTiers": ["business", "cost-optimized"],
+        "weight": 0.7
+      },
+      "implications": {
+        "questionsToAdd": ["budget-constraints"],
+        "featuresRequired": ["cost-monitoring", "optimization-tools"],
+        "pricingImpact": "focus-on-value"
+      }
+    },
+    {
+      "id": "challenge_collaboration",
+      "value": "team-collaboration",
+      "label": "Team Collaboration", 
+      "description": "Poor team communication and coordination",
+      "metadata": {
+        "severity": "medium",
+        "category": "operational",
+        "frequency": "common",
+        "solutionCategories": ["collaboration", "communication"],
+        "recommendedTiers": ["business", "business-plus"],
+        "weight": 0.6
+      },
+      "implications": {
+        "questionsToAdd": ["team-size", "collaboration-tools"],
+        "featuresRequired": ["real-time-collaboration", "team-management"],
+        "pricingImpact": "neutral"
+      }
+    },
+    {
+      "id": "challenge_data_management",
+      "value": "data-management",
+      "label": "Data Management",
+      "description": "Difficulty organizing, accessing, and analyzing data",
+      "metadata": {
+        "severity": "high",
+        "category": "technical",
+        "frequency": "common",
+        "solutionCategories": ["data-organization", "analytics"],
+        "recommendedTiers": ["business-plus", "enterprise"],
+        "weight": 0.8
+      },
+      "implications": {
+        "questionsToAdd": ["data-volume", "analytics-needs"],
+        "featuresRequired": ["advanced-search", "data-analytics"],
+        "pricingImpact": "increase"
+      }
+    },
+    {
+      "id": "challenge_security_compliance",
+      "value": "security-compliance",
+      "label": "Security & Compliance",
+      "description": "Meeting security requirements and regulatory compliance",
+      "metadata": {
+        "severity": "critical",
+        "category": "compliance",
+        "frequency": "sector-dependent",
+        "solutionCategories": ["security", "compliance"],
+        "recommendedTiers": ["enterprise", "security-focused"],
+        "weight": 1.0
+      },
+      "implications": {
+        "questionsToAdd": ["compliance-requirements", "security-standards"],
+        "featuresRequired": ["enterprise-security", "audit-logging"],
+        "pricingImpact": "premium"
+      }
+    },
+    {
+      "id": "challenge_integration",
+      "value": "system-integration",
+      "label": "System Integration",
+      "description": "Connecting disparate systems and tools",
+      "metadata": {
+        "severity": "medium",
+        "category": "technical",
+        "frequency": "common",
+        "solutionCategories": ["integration", "apis"],
+        "recommendedTiers": ["business-plus", "enterprise"],
+        "weight": 0.7
+      }
+    }
+  ],
+  "displaySettings": {
+    "layout": "grid",
+    "columns": 2,
+    "showDescriptions": true,
+    "groupBy": "severity",
+    "showSelectionCount": true
+  },
+  "validation": {
+    "minSelections": 1,
+    "maxSelections": 5,
+    "errorMessages": {
+      "minSelections": "Please select at least one challenge",
+      "maxSelections": "Please select no more than 5 challenges"
+    }
+  },
+  "analytics": {
+    "trackCombinations": true,
+    "correlateWithOutcomes": true,
+    "segmentByIndustry": true
+  }
+}

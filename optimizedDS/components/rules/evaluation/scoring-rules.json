@@ -1,0 +1,262 @@
+{
+  "component": {
+    "type": "rule-set",
+    "id": "scoring-rules",
+    "version": "1.0.0",
+    "lastModified": "2024-01-15T08:45:00Z",
+    "author": "sales-team"
+  },
+  "ruleSet": {
+    "id": "scoring-rules",
+    "name": "Final Scoring and Tier Assignment Rules",
+    "description": "Rules that evaluate all answers to assign final product tiers",
+    "scope": "final-evaluation",
+    "category": "evaluation"
+  },
+  "rules": [
+    {
+      "id": "eval_enterprise_tier",
+      "name": "Enterprise Tier Qualification",
+      "priority": 100,
+      "condition": {
+        "expression": "answers.q001?.value === 'enterprise' && parseInt(answers.q003?.metadata?.weight || 0) >= 4 && (!answers.q005 || answers.q005?.metadata?.pricePoint !== 'low')",
+        "description": "Large enterprise organizations with substantial budget",
+        "dependencies": ["q001", "q003", "q005"]
+      },
+      "result": {
+        "stepId": "enterprise-premium",
+        "confidence": 0.95,
+        "tier": "enterprise",
+        "pricing": "custom"
+      },
+      "reasoning": {
+        "factors": [
+          "Organization type: Enterprise",
+          "Company size: Large scale (weight >= 4)",
+          "Budget: No low-budget constraint"
+        ],
+        "businessLogic": "Enterprise organizations with substantial scale require full-featured solutions"
+      },
+      "metadata": {
+        "category": "tier-assignment",
+        "businessValue": "very-high",
+        "averageRevenue": "$5000/month",
+        "salesHandoff": true
+      }
+    },
+    {
+      "id": "eval_security_focused_enterprise",
+      "name": "Security-First Enterprise",
+      "priority": 95,
+      "condition": {
+        "expression": "answers.q002?.some(challenge => challenge.value === 'security-compliance') && (answers.q001?.value === 'business' || answers.q001?.value === 'enterprise')",
+        "description": "Organizations prioritizing security and compliance",
+        "dependencies": ["q001", "q002"]
+      },
+      "result": {
+        "stepId": "security-focused-enterprise",
+        "confidence": 0.92,
+        "tier": "enterprise-security",
+        "pricing": "premium"
+      },
+      "reasoning": {
+        "factors": [
+          "Security & compliance is primary challenge",
+          "Commercial organization",
+          "Requires specialized security features"
+        ],
+        "businessLogic": "Security-focused organizations need specialized compliance and security features"
+      },
+      "metadata": {
+        "category": "specialized-tier",
+        "businessValue": "high",
+        "averageRevenue": "$3500/month",
+        "requiresSecurityReview": true
+      }
+    },
+    {
+      "id": "eval_business_plus",
+      "name": "Business Plus Qualification",
+      "priority": 90,
+      "condition": {
+        "expression": "answers.q001?.value === 'business' && parseInt(answers.q003?.metadata?.weight || 0) >= 2 && answers.q002?.some(challenge => challenge.metadata?.severity === 'high')",
+        "description": "Medium-sized businesses with complex challenges",
+        "dependencies": ["q001", "q002", "q003"]
+      },
+      "result": {
+        "stepId": "business-plus",
+        "confidence": 0.88,
+        "tier": "business-plus",
+        "pricing": "fixed"
+      },
+      "reasoning": {
+        "factors": [
+          "Organization type: Business",
+          "Company size: Medium scale",
+          "High-severity challenges identified"
+        ],
+        "businessLogic": "Growing businesses with complex challenges need advanced features"
+      },
+      "metadata": {
+        "category": "tier-assignment",
+        "businessValue": "high",
+        "averageRevenue": "$599/month",
+        "trialEligible": true
+      }
+    },
+    {
+      "id": "eval_startup_accelerator",
+      "name": "Startup Accelerator Program",
+      "priority": 85,
+      "condition": {
+        "expression": "answers.q001?.value === 'startup' && answers.q005?.metadata?.pricePoint === 'low' && answers.q004 && answers.q004.length > 30",
+        "description": "Startups with budget constraints but detailed use cases",
+        "dependencies": ["q001", "q004", "q005"]
+      },
+      "result": {
+        "stepId": "startup-accelerator",
+        "confidence": 0.82,
+        "tier": "startup-accelerator",
+        "pricing": "discounted"
+      },
+      "reasoning": {
+        "factors": [
+          "Organization type: Startup",
+          "Budget-conscious pricing",
+          "Detailed use case provided"
+        ],
+        "businessLogic": "Qualified startups get special pricing and support programs"
+      },
+      "metadata": {
+        "category": "special-program",
+        "businessValue": "medium",
+        "averageRevenue": "$49/month",
+        "specialPrograms": ["accelerator", "mentorship"]
+      }
+    },
+    {
+      "id": "eval_cost_optimized_business",
+      "name": "Cost-Optimized Business Tier",
+      "priority": 75,
+      "condition": {
+        "expression": "answers.q002?.some(challenge => challenge.value === 'cost-optimization') && answers.q005?.metadata?.pricePoint === 'low'",
+        "description": "Organizations focused on cost optimization with budget constraints",
+        "dependencies": ["q002", "q005"]
+      },
+      "result": {
+        "stepId": "cost-optimized-business",
+        "confidence": 0.78,
+        "tier": "business-lite",
+        "pricing": "value"
+      },
+      "reasoning": {
+        "factors": [
+          "Cost optimization is primary challenge",
+          "Budget constraints indicated",
+          "Value-focused recommendation needed"
+        ],
+        "businessLogic": "Cost-conscious organizations need value-optimized solutions"
+      },
+      "metadata": {
+        "category": "value-tier",
+        "businessValue": "medium",
+        "averageRevenue": "$199/month",
+        "emphasizeValue": true
+      }
+    },
+    {
+      "id": "eval_personal_professional",
+      "name": "Personal Professional Tier",
+      "priority": 70,
+      "condition": {
+        "expression": "answers.q001?.value === 'personal' && answers.q004 && (answers.q004.toLowerCase().includes('professional') || answers.q004.toLowerCase().includes('freelance') || answers.q004.toLowerCase().includes('consultant'))",
+        "description": "Personal users with professional requirements",
+        "dependencies": ["q001", "q004"]
+      },
+      "result": {
+        "stepId": "personal-pro",
+        "confidence": 0.71,
+        "tier": "personal-pro",
+        "pricing": "individual"
+      },
+      "reasoning": {
+        "factors": [
+          "Personal use case",
+          "Professional requirements indicated",
+          "Individual user with advanced needs"
+        ],
+        "businessLogic": "Professional individuals need more features than basic personal users"
+      },
+      "metadata": {
+        "category": "personal-tier",
+        "businessValue": "low-medium",
+        "averageRevenue": "$39/month"
+      }
+    }
+  ],
+  "fallbackRules": {
+    "default_business": {
+      "condition": "answers.q001?.value === 'business'",
+      "result": {
+        "stepId": "business-standard",
+        "confidence": 0.5,
+        "tier": "business-standard",
+        "pricing": "standard"
+      },
+      "reasoning": {
+        "factors": ["Default business recommendation"],
+        "businessLogic": "Standard business tier when no specific criteria match"
+      }
+    },
+    "default_personal": {
+      "condition": "answers.q001?.value === 'personal'",
+      "result": {
+        "stepId": "personal-basic",
+        "confidence": 0.5,
+        "tier": "personal-basic",
+        "pricing": "basic"
+      }
+    },
+    "ultimate_fallback": {
+      "condition": "true",
+      "result": {
+        "stepId": "discovery-call",
+        "confidence": 0.3,
+        "tier": "consultation",
+        "pricing": "consultation"
+      },
+      "reasoning": {
+        "factors": ["Unable to determine best fit"],
+        "businessLogic": "Manual consultation when automated matching fails"
+      }
+    }
+  },
+  "scoringAlgorithm": {
+    "method": "weighted_priority",
+    "stopOnFirstMatch": true,
+    "minimumConfidence": 0.6,
+    "tieBreaker": "highest_business_value"
+  },
+  "testing": {
+    "scenarios": [
+      {
+        "name": "enterprise_qualification",
+        "input": {
+          "q001": {"value": "enterprise", "metadata": {"tier": "enterprise"}},
+          "q003": {"value": "500+", "metadata": {"weight": 5}}
+        },
+        "expectedRule": "eval_enterprise_tier",
+        "expectedStepId": "enterprise-premium"
+      },
+      {
+        "name": "security_focused",
+        "input": {
+          "q001": {"value": "business"},
+          "q002": [{"value": "security-compliance", "metadata": {"severity": "critical"}}]
+        },
+        "expectedRule": "eval_security_focused_enterprise",
+        "expectedStepId": "security-focused-enterprise"
+      }
+    ]
+  }
+}

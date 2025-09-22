@@ -1,0 +1,75 @@
+{
+  "questions": {
+    "q051": {
+      "id": "q051",
+      "type": "single-choice",
+      "level": 4,
+      "text": "How important is real-time collaboration to your team?",
+      "description": "This affects our feature recommendations for your tier.",
+      "answerSetId": "importance_scale",
+      "validation": {
+        "required": true
+      },
+      "conditions": [
+        {
+          "dependsOn": "q003",
+          "rule": "parseInt(answer.value) > 10"
+        },
+        {
+          "dependsOn": "q008",
+          "rule": "answer.value === 'team-collaboration'"
+        }
+      ],
+      "metadata": {
+        "category": "features",
+        "estimatedTime": 20,
+        "tags": ["collaboration", "team", "features"]
+      },
+      "navigation": {
+        "allowBack": true,
+        "allowSkip": false,
+        "nextQuestionRules": ["nav_rule_025"]
+      }
+    },
+    "q052": {
+      "id": "q052",
+      "type": "number",
+      "level": 4,
+      "text": "How many projects do you typically manage simultaneously?",
+      "description": "This helps us understand your workflow complexity.",
+      "answerSetId": null,
+      "validation": {
+        "required": true,
+        "min": 1,
+        "max": 1000,
+        "customRules": ["reasonable_number"]
+      },
+      "conditions": [
+        {
+          "dependsOn": "q051",
+          "rule": "answer.value === 'very-important' || answer.value === 'critical'"
+        }
+      ],
+      "metadata": {
+        "category": "usage-pattern",
+        "estimatedTime": 15,
+        "tags": ["projects", "volume", "workflow"]
+      },
+      "navigation": {
+        "allowBack": true,
+        "allowSkip": false,
+        "nextQuestionRules": ["nav_rule_026"]
+      },
+      "display": {
+        "placeholder": "Enter number",
+        "suffix": "projects"
+      }
+    }
+  },
+  "metadata": {
+    "fileVersion": "1.0.0",
+    "questionCount": 2,
+    "levelRange": [4, 4],
+    "lastModified": "2024-01-15T10:00:00Z"
+  }
+}

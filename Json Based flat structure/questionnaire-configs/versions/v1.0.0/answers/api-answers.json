@@ -1,0 +1,147 @@
+{
+  "apiAnswerSets": {
+    "dynamic_industries": {
+      "id": "dynamic_industries",
+      "type": "api",
+      "version": "1.0.0",
+      "config": {
+        "endpoint": {
+          "url": "https://api.company.com/v1/industries",
+          "method": "GET",
+          "headers": {
+            "Authorization": "Bearer {{API_TOKEN}}",
+            "Content-Type": "application/json"
+          },
+          "timeout": 5000,
+          "retries": 3
+        },
+        "parameters": {
+          "static": {
+            "limit": 50,
+            "active": true
+          },
+          "dynamic": {
+            "region": "{{context.user.region}}",
+            "language": "{{context.user.language}}"
+          },
+          "fromAnswers": {
+            "orgType": "{{answers.q001.value}}"
+          }
+        },
+        "responseMapping": {
+          "dataPath": "data.industries",
+          "optionMapping": {
+            "id": "industry_{{item.id}}",
+            "value": "{{item.code}}",
+            "label": "{{item.name}}",
+            "description": "{{item.description}}",
+            "metadata": {
+              "category": "{{item.category}}",
+              "trending": "{{item.trending}}"
+            }
+          }
+        },
+        "caching": {
+          "enabled": true,
+          "ttl": 1800,
+          "key": "industries_{{orgType}}_{{region}}"
+        },
+        "fallback": {
+          "staticAnswerSetId": "default_industries",
+          "onError": "use_fallback",
+          "onEmpty": "use_fallback"
+        }
+      },
+      "validation": {
+        "minOptions": 5,
+        "maxOptions": 100,
+        "requiredFields": ["id", "value", "label"]
+      },
+      "metadata": {
+        "description": "Dynamic industry list based on organization type and region",
+        "updateFrequency": "daily",
+        "owner": "data-team"
+      }
+    },
+    "feature_recommendations": {
+      "id": "feature_recommendations",
+      "type": "api",
+      "version": "1.0.0",
+      "config": {
+        "endpoint": {
+          "url": "https://ml.company.com/v2/recommendations/features",
+          "method": "POST",
+          "headers": {
+            "Authorization": "Bearer {{API_TOKEN}}",
+            "X-Request-ID": "{{uuid}}"
+          },
+          "timeout": 10000,
+          "retries": 2
+        },
+        "parameters": {
+          "body": {
+            "orgType": "{{answers.q001.value}}",
+            "companySize": "{{answers.q003.value}}",
+            "challenges": "{{answers.q002.value}}",
+            "budget": "{{answers.q005.value}}",
+            "context": {
+              "sessionId": "{{sessionId}}",
+              "userId": "{{userId}}",
+              "timestamp": "{{timestamp}}"
+            }
+          }
+        },
+        "responseMapping": {
+          "dataPath": "recommendations",
+          "optionMapping": {
+            "id": "feature_{{item.featureId}}",
+            "value": "{{item.featureId}}",
+            "label": "{{item.name}}",
+            "description": "{{item.description}}",
+            "metadata": {
+              "score": "{{item.relevanceScore}}",
+              "category": "{{item.category}}",
+              "tier": "{{item.requiredTier}}"
+            }
+          }
+        },
+        "caching": {
+          "enabled": true,
+          "ttl": 900,
+          "key": "features_{{hash(orgType,companySize,challenges,budget)}}"
+        },
+        "fallback": {
+          "staticAnswerSetId": "standard_features",
+          "onError": "use_fallback",
+          "onTimeout": "use_fallback"
+        }
+      },
+      "postProcessing": {
+        "sort": {
+          "field": "metadata.score",
+          "order": "desc"
+        },
+        "filter": {
+          "minScore": 0.3
+        },
+        "limit": 15
+      }
+    }
+  },
+  "globalConfig": {
+    "defaultTimeout": 8000,
+    "defaultRetries": 2,
+    "defaultCacheTTL": 600,
+    "apiTokenSource": "environment",
+    "errorHandling": {
+      "logErrors": true,
+      "includeContext": true,
+      "alertOnFailure": true
+    }
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "totalApiSets": 2,
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  }
+}

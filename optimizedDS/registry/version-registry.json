@@ -1,0 +1,113 @@
+{
+  "registry": {
+    "name": "Version Registry",
+    "version": "1.0.0",
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  },
+  "questionnaires": {
+    "product-recommendation": {
+      "id": "product-recommendation",
+      "name": "Product Recommendation Questionnaire",
+      "description": "Dynamic questionnaire for product tier recommendations",
+      "owner": "product-team",
+      "repository": "questionnaire-configs",
+      "versions": {
+        "1.0.0": {
+          "version": "1.0.0",
+          "status": "active",
+          "compositionFile": "compositions/v1.0.0-composition.json",
+          "releaseDate": "2024-01-15T00:00:00Z",
+          "buildStatus": "success",
+          "metadata": {
+            "releaseNotes": "Initial release with basic business/personal flow",
+            "breakingChanges": false,
+            "migrationRequired": false,
+            "rollbackSupported": true
+          },
+          "components": {
+            "questions": 5,
+            "answerSets": 5,
+            "navigationRules": 8,
+            "evaluationRules": 6,
+            "flows": 2
+          },
+          "buildArtifacts": {
+            "compiled": "build/compiled/v1.0.0/",
+            "optimized": "build/optimized/v1.0.0/",
+            "checksums": "build/checksums/v1.0.0.json"
+          },
+          "performance": {
+            "estimatedLoadTime": "< 2s",
+            "memoryUsage": "< 20MB",
+            "cacheEfficiency": "85%"
+          },
+          "testing": {
+            "unitTests": "passed",
+            "integrationTests": "passed",
+            "loadTests": "passed",
+            "coverage": "94%"
+          }
+        },
+        "1.1.0": {
+          "version": "1.1.0",
+          "status": "draft",
+          "compositionFile": "compositions/v1.1.0-composition.json",
+          "developmentStart": "2024-01-16T00:00:00Z",
+          "buildStatus": "in_progress",
+          "metadata": {
+            "releaseNotes": "Added advanced enterprise features and improved personal flow",
+            "breakingChanges": false,
+            "migrationRequired": false,
+            "rollbackSupported": true,
+            "parentVersion": "1.0.0"
+          },
+          "changes": {
+            "added": ["q006", "q007", "advanced-enterprise-rules"],
+            "modified": ["q001", "q003", "business-flow"],
+            "deprecated": [],
+            "removed": []
+          }
+        },
+        "2.0.0": {
+          "version": "2.0.0",
+          "status": "planned",
+          "plannedReleaseDate": "2024-03-01T00:00:00Z",
+          "metadata": {
+            "releaseNotes": "Major overhaul with ML-powered recommendations",
+            "breakingChanges": true,
+            "migrationRequired": true,
+            "rollbackSupported": false,
+            "parentVersion": "1.1.0"
+          },
+          "plannedChanges": {
+            "majorFeatures": ["ml-recommendations", "dynamic-question-generation"],
+            "deprecations": ["static-scoring-rules"],
+            "newComponents": ["ml-models", "dynamic-content-api"]
+          }
+        }
+      },
+      "activeVersion": "1.0.0",
+      "developmentVersion": "1.1.0",
+      "supportedVersions": ["1.0.0"],
+      "deprecatedVersions": [],
+      "versioningStrategy": {
+        "scheme": "semver",
+        "autoUpgrade": false,
+        "maxActiveVersions": 3,
+        "deprecationPeriod": "6 months"
+      }
+    }
+  },
+  "globalSettings": {
+    "defaultCacheTTL": 3600,
+    "buildRetentionDays": 90,
+    "testRequirements": {
+      "minCoverage": 90,
+      "requiredTests": ["unit", "integration", "load"],
+      "performanceThresholds": {
+        "loadTime": 3000,
+        "memoryUsage": 50
+      }
+    }
+  }
+}

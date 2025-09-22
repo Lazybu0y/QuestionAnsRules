@@ -1,0 +1,122 @@
+{
+  "component": {
+    "type": "answer-set",
+    "id": "business-types",
+    "version": "1.0.0",
+    "lastModified": "2024-01-15T07:00:00Z",
+    "author": "product-team"
+  },
+  "answerSet": {
+    "id": "business-types",
+    "name": "Organization Types",
+    "description": "Classification options for different organization types",
+    "type": "static",
+    "metadata": {
+      "category": "classification",
+      "sortStrategy": "business_priority",
+      "allowCustom": false,
+      "mutuallyExclusive": true
+    }
+  },
+  "options": [
+    {
+      "id": "org_business",
+      "value": "business",
+      "label": "Business (SMB)",
+      "description": "Small to medium business with established operations",
+      "metadata": {
+        "tier": "business",
+        "weight": 2,
+        "category": "commercial",
+        "typicalSize": "10-500 employees",
+        "recommendedPlans": ["business", "business-plus"],
+        "icon": "building-2"
+      },
+      "analytics": {
+        "expectedSelection": "40%",
+        "conversionRate": "high",
+        "averageRevenue": "$299/month"
+      }
+    },
+    {
+      "id": "org_enterprise",
+      "value": "enterprise",
+      "label": "Enterprise",
+      "description": "Large organization with complex requirements",
+      "metadata": {
+        "tier": "enterprise",
+        "weight": 4,
+        "category": "commercial",
+        "typicalSize": "500+ employees",
+        "recommendedPlans": ["enterprise", "enterprise-plus"],
+        "icon": "building-skyscraper"
+      },
+      "analytics": {
+        "expectedSelection": "25%",
+        "conversionRate": "very-high",
+        "averageRevenue": "$2000/month"
+      }
+    },
+    {
+      "id": "org_startup",
+      "value": "startup",
+      "label": "Startup",
+      "description": "Early-stage company with growth focus",
+      "metadata": {
+        "tier": "startup",
+        "weight": 1,
+        "category": "emerging",
+        "typicalSize": "5-50 employees",
+        "recommendedPlans": ["starter", "business"],
+        "icon": "rocket"
+      },
+      "analytics": {
+        "expectedSelection": "20%",
+        "conversionRate": "medium",
+        "averageRevenue": "$99/month"
+      },
+      "specialPrograms": {
+        "accelerator": true,
+        "discountEligible": true,
+        "mentorshipAvailable": true
+      }
+    },
+    {
+      "id": "org_personal",
+      "value": "personal",
+      "label": "Personal Use", 
+      "description": "Individual user or personal projects",
+      "metadata": {
+        "tier": "personal",
+        "weight": 0.5,
+        "category": "individual",
+        "typicalSize": "1-5 users",
+        "recommendedPlans": ["personal", "personal-pro"],
+        "icon": "user"
+      },
+      "analytics": {
+        "expectedSelection": "15%",
+        "conversionRate": "medium",
+        "averageRevenue": "$19/month"
+      }
+    }
+  ],
+  "displaySettings": {
+    "layout": "cards",
+    "showIcons": true,
+    "showDescriptions": true,
+    "highlightRecommended": false,
+    "groupBy": "category"
+  },
+  "validation": {
+    "required": true,
+    "errorMessages": {
+      "required": "Please select your organization type to continue"
+    }
+  },
+  "analytics": {
+    "trackSelectionOrder": false,
+    "trackHoverTime": true,
+    "segmentUsers": true
+  }
+}

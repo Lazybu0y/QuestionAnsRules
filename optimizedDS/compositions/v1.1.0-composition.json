@@ -1,0 +1,187 @@
+{
+  "composition": {
+    "version": "1.1.0",
+    "questionnaireId": "product-recommendation",
+    "name": "Product Recommendation v1.1.0",
+    "description": "Enhanced version with advanced enterprise features and improved UX",
+    "created": "2024-01-20T00:00:00Z",
+    "author": "product-team",
+    "parentVersion": "1.0.0"
+  },
+  "changes": {
+    "added": [
+      "components/questions/q006.json",
+      "components/questions/q007.json",
+      "components/answer-sets/enterprise-features.json",
+      "components/rules/navigation/advanced-enterprise-rules.json"
+    ],
+    "modified": [
+      {
+        "component": "components/questions/q001.json",
+        "changes": ["Updated help text", "Added analytics tracking"]
+      },
+      {
+        "component": "components/questions/q003.json",
+        "changes": ["Added enterprise-specific options"]
+      }
+    ],
+    "deprecated": [],
+    "removed": []
+  },
+  "components": {
+    "questions": [
+      {
+        "ref": "components/questions/q001.json",
+        "version": "1.1.0",
+        "priority": 1,
+        "required": true,
+        "overrides": {
+          "analytics": {
+            "enhancedTracking": true,
+            "segmentationImproved": true
+          }
+        }
+      },
+      {
+        "ref": "components/questions/q002.json",
+        "version": "1.0.0",
+        "priority": 2,
+        "required": true
+      },
+      {
+        "ref": "components/questions/q003.json",
+        "version": "1.1.0",
+        "priority": 3,
+        "required": false,
+        "conditions": ["business-users"],
+        "overrides": {
+          "enhancedOptions": true
+        }
+      },
+      {
+        "ref": "components/questions/q004.json",
+        "version": "1.0.0",
+        "priority": 3,
+        "required": false,
+        "conditions": ["personal-users"]
+      },
+      {
+        "ref": "components/questions/q005.json",
+        "version": "1.0.0",
+        "priority": 4,
+        "required": false
+      },
+      {
+        "ref": "components/questions/q006.json",
+        "version": "1.0.0",
+        "priority": 5,
+        "required": false,
+        "conditions": ["enterprise-deep-dive"],
+        "isNew": true
+      },
+      {
+        "ref": "components/questions/q007.json",
+        "version": "1.0.0",
+        "priority": 6,
+        "required": false,
+        "conditions": ["advanced-requirements"],
+        "isNew": true
+      }
+    ],
+    "answerSets": [
+      {
+        "ref": "components/answer-sets/business-types.json",
+        "version": "1.0.0",
+        "usedBy": ["q001"]
+      },
+      {
+        "ref": "components/answer-sets/business-challenges.json",
+        "version": "1.0.0",
+        "usedBy": ["q002"]
+      },
+      {
+        "ref": "components/answer-sets/company-sizes.json",
+        "version": "1.1.0",
+        "usedBy": ["q003"],
+        "isModified": true
+      },
+      {
+        "ref": "components/answer-sets/enterprise-features.json",
+        "version": "1.0.0",
+        "usedBy": ["q006", "q007"],
+        "isNew": true
+      }
+    ],
+    "rules": {
+      "navigation": [
+        {
+          "ref": "components/rules/navigation/business-flow-rules.json",
+          "version": "1.0.0"
+        },
+        {
+          "ref": "components/rules/navigation/personal-flow-rules.json",
+          "version": "1.0.0"
+        },
+        {
+          "ref": "components/rules/navigation/advanced-enterprise-rules.json",
+          "version": "1.0.0",
+          "isNew": true,
+          "scope": "enterprise-advanced"
+        }
+      ],
+      "evaluation": [
+        {
+          "ref": "components/rules/evaluation/scoring-rules.json",
+          "version": "1.1.0",
+          "isModified": true
+        },
+        {
+          "ref": "components/rules/evaluation/step-mapping-rules.json",
+          "version": "1.0.0"
+        }
+      ]
+    }
+  },
+  "featureFlags": {
+    "enterpriseAdvancedFlow": {
+      "enabled": true,
+      "rolloutPercentage": 100,
+      "conditions": ["enterprise-users"]
+    },
+    "enhancedAnalytics": {
+      "enabled": true,
+      "rolloutPercentage": 50
+    },
+    "newQuestionTypes": {
+      "enabled": false,
+      "rolloutPercentage": 0,
+      "plannedFor": "v1.2.0"
+    }
+  },
+  "migrationStrategy": {
+    "fromVersion": "1.0.0",
+    "backwardCompatible": true,
+    "automaticMigration": true,
+    "migrationRules": [
+      {
+        "condition": "existingUsers",
+        "action": "gradual_rollout",
+        "percentage": 10
+      }
+    ]
+  },
+  "buildConfiguration": {
+    "target": "production",
+    "optimizations": [
+      "rule-compilation",
+      "answer-preloading", 
+      "dead-code-elimination",
+      "asset-minification",
+      "tree-shaking"
+    ],
+    "experimentalFeatures": [
+      "predictive-preloading",
+      "adaptive-caching"
+    ]
+  }
+}

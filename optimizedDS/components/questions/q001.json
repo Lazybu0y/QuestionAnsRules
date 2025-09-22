@@ -1,0 +1,83 @@
+{
+  "component": {
+    "type": "question",
+    "id": "q001",
+    "version": "1.0.0",
+    "lastModified": "2024-01-15T09:30:00Z",
+    "author": "product-team"
+  },
+  "question": {
+    "id": "q001",
+    "type": "single-choice",
+    "level": 0,
+    "text": "What type of organization are you representing?",
+    "description": "This helps us understand your primary use case and tailor our recommendations accordingly.",
+    "metadata": {
+      "category": "classification",
+      "estimatedTime": 15,
+      "helpText": "Select the option that best describes your organization type",
+      "tags": ["root", "classification", "organization"],
+      "critical": true,
+      "analytics": {
+        "trackSelections": true,
+        "trackTime": true,
+        "segmentBy": "organization_type"
+      }
+    }
+  },
+  "answerSet": {
+    "reference": "business-types",
+    "fallback": "default-organization-types",
+    "validation": {
+      "required": true,
+      "customRules": []
+    }
+  },
+  "display": {
+    "layout": "vertical",
+    "showProgress": true,
+    "animation": "fade-in",
+    "customCSS": "question-root-styling"
+  },
+  "navigation": {
+    "allowBack": false,
+    "allowSkip": false,
+    "autoAdvance": false,
+    "nextRules": ["nav_business_org_type", "nav_personal_org_type"]
+  },
+  "conditions": {
+    "showIf": "true",
+    "requiredPrevious": [],
+    "blockingConditions": []
+  },
+  "testing": {
+    "testCases": [
+      {
+        "name": "business_selection",
+        "input": "business",
+        "expectedNext": "q003",
+        "expectedRule": "nav_business_org_type"
+      },
+      {
+        "name": "personal_selection",
+        "input": "personal", 
+        "expectedNext": "q004",
+        "expectedRule": "nav_personal_org_type"
+      }
+    ],
+    "accessibility": {
+      "screenReader": "optimized",
+      "keyboardNavigation": "full",
+      "contrastRatio": "AAA"
+    }
+  },
+  "localization": {
+    "defaultLanguage": "en",
+    "supportedLanguages": ["en", "es", "fr"],
+    "textKeys": {
+      "text": "q001.text",
+      "description": "q001.description",
+      "helpText": "q001.helpText"
+    }
+  }
+}

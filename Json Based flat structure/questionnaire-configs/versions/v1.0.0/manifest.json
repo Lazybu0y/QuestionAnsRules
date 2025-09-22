@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "questionnaireId": "product-recommendation",
+  "name": "Product Recommendation Questionnaire",
+  "description": "Dynamic questionnaire to recommend the best product tier",
+  "metadata": {
+    "created": "2024-01-15T10:00:00Z",
+    "author": "Product Team",
+    "maxLevels": 10,
+    "estimatedDuration": 180,
+    "supportedLanguages": ["en", "es", "fr"],
+    "compatibilityVersion": "2.0"
+  },
+  "structure": {
+    "questionsFiles": [
+      "questions/q001-q050.json",
+      "questions/q051-q100.json"
+    ],
+    "rulesFiles": [
+      "rules/navigation/level-0-rules.json",
+      "rules/navigation/level-1-rules.json",
+      "rules/evaluation/final-rules.json"
+    ],
+    "answerFiles": [
+      "answers/static-answers.json",
+      "answers/api-answers.json"
+    ],
+    "flowFile": "flow-definitions/flow-graph.json"
+  },
+  "entryPoint": {
+    "rootQuestion": "q001",
+    "fallbackQuestion": "q001",
+    "completionRules": ["final_evaluation_rule_001"]
+  },
+  "performance": {
+    "cacheStrategy": "aggressive",
+    "preloadLevels": 2,
+    "ruleCompilation": true,
+    "answerCaching": {
+      "static": 3600,
+      "api": 900
+    }
+  }
+}

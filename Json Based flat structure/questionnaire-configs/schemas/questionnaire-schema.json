@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Questionnaire Configuration Schema",
+  "type": "object",
+  "required": ["version", "questionnaireId", "name", "structure", "entryPoint"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "questionnaireId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "structure": {
+      "type": "object",
+      "required": ["questionsFiles", "rulesFiles", "answerFiles", "flowFile"],
+      "properties": {
+        "questionsFiles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "rulesFiles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "answerFiles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "flowFile": { "type": "string" }
+      }
+    },
+    "entryPoint": {
+      "type": "object",
+      "required": ["rootQuestion"],
+      "properties": {
+        "rootQuestion": { "type": "string" },
+        "fallbackQuestion": { "type": "string" },
+        "completionRules": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "performance": {
+      "type": "object",
+      "properties": {
+        "cacheStrategy": {
+          "type": "string",
+          "enum": ["none", "basic", "aggressive"]
+        },
+        "preloadLevels": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "ruleCompilation": { "type": "boolean" }
+      }
+    }
+  }
+}

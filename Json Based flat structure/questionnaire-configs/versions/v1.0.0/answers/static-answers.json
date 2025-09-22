@@ -1,0 +1,238 @@
+{
+  "answerSets": {
+    "organization_types": {
+      "id": "organization_types",
+      "type": "static",
+      "version": "1.0.0",
+      "options": [
+        {
+          "id": "org_001",
+          "value": "business",
+          "label": "Business (SMB)",
+          "description": "Small to medium business with 10-500 employees",
+          "metadata": {
+            "tier": "business",
+            "weight": 1,
+            "category": "commercial"
+          }
+        },
+        {
+          "id": "org_002",
+          "value": "enterprise",
+          "label": "Enterprise",
+          "description": "Large organization with 500+ employees",
+          "metadata": {
+            "tier": "enterprise",
+            "weight": 3,
+            "category": "commercial"
+          }
+        },
+        {
+          "id": "org_003",
+          "value": "startup",
+          "label": "Startup",
+          "description": "Early-stage company with <50 employees",
+          "metadata": {
+            "tier": "startup",
+            "weight": 0.5,
+            "category": "emerging"
+          }
+        },
+        {
+          "id": "org_004",
+          "value": "personal",
+          "label": "Personal Use",
+          "description": "Individual or personal projects",
+          "metadata": {
+            "tier": "personal",
+            "weight": 0.2,
+            "category": "individual"
+          }
+        }
+      ],
+      "metadata": {
+        "category": "classification",
+        "sortOrder": "weight_desc",
+        "allowCustom": false
+      }
+    },
+    "business_challenges": {
+      "id": "business_challenges",
+      "type": "static",
+      "version": "1.0.0",
+      "options": [
+        {
+          "id": "challenge_001",
+          "value": "scalability",
+          "label": "Scalability Issues",
+          "description": "Current solution doesn't scale with growth",
+          "metadata": {
+            "severity": "high",
+            "category": "technical"
+          }
+        },
+        {
+          "id": "challenge_002",
+          "value": "cost-optimization",
+          "label": "Cost Optimization",
+          "description": "Need to reduce operational costs",
+          "metadata": {
+            "severity": "medium",
+            "category": "financial"
+          }
+        },
+        {
+          "id": "challenge_003",
+          "value": "team-collaboration",
+          "label": "Team Collaboration",
+          "description": "Poor team communication and coordination",
+          "metadata": {
+            "severity": "medium",
+            "category": "operational"
+          }
+        },
+        {
+          "id": "challenge_004",
+          "value": "data-management",
+          "label": "Data Management",
+          "description": "Difficulty organizing and accessing data",
+          "metadata": {
+            "severity": "high",
+            "category": "technical"
+          }
+        },
+        {
+          "id": "challenge_005",
+          "value": "security-compliance",
+          "label": "Security & Compliance",
+          "description": "Meeting security and regulatory requirements",
+          "metadata": {
+            "severity": "critical",
+            "category": "compliance"
+          }
+        }
+      ],
+      "metadata": {
+        "category": "pain-points",
+        "maxSelections": 5,
+        "minSelections": 1
+      }
+    },
+    "company_sizes": {
+      "id": "company_sizes",
+      "type": "static",
+      "version": "1.0.0",
+      "options": [
+        {
+          "id": "size_001",
+          "value": "1-10",
+          "label": "1-10 employees",
+          "metadata": { "tierSuggestion": "starter", "weight": 1 }
+        },
+        {
+          "id": "size_002",
+          "value": "11-50",
+          "label": "11-50 employees",
+          "metadata": { "tierSuggestion": "business", "weight": 2 }
+        },
+        {
+          "id": "size_003",
+          "value": "51-200",
+          "label": "51-200 employees",
+          "metadata": { "tierSuggestion": "business-plus", "weight": 3 }
+        },
+        {
+          "id": "size_004",
+          "value": "201-500",
+          "label": "201-500 employees",
+          "metadata": { "tierSuggestion": "enterprise", "weight": 4 }
+        },
+        {
+          "id": "size_005",
+          "value": "500+",
+          "label": "500+ employees",
+          "metadata": { "tierSuggestion": "enterprise-plus", "weight": 5 }
+        }
+      ]
+    },
+    "budget_ranges": {
+      "id": "budget_ranges",
+      "type": "static",
+      "version": "1.0.0",
+      "options": [
+        {
+          "id": "budget_001",
+          "value": "under-100",
+          "label": "Under $100/month",
+          "metadata": { "maxTier": "starter", "pricePoint": "low" }
+        },
+        {
+          "id": "budget_002",
+          "value": "100-500",
+          "label": "$100-500/month",
+          "metadata": { "maxTier": "business", "pricePoint": "medium" }
+        },
+        {
+          "id": "budget_003",
+          "value": "500-2000",
+          "label": "$500-2000/month",
+          "metadata": { "maxTier": "business-plus", "pricePoint": "high" }
+        },
+        {
+          "id": "budget_004",
+          "value": "2000+",
+          "label": "$2000+/month",
+          "metadata": { "maxTier": "enterprise-plus", "pricePoint": "premium" }
+        },
+        {
+          "id": "budget_005",
+          "value": "flexible",
+          "label": "Flexible - depends on value",
+          "metadata": { "maxTier": "any", "pricePoint": "value-based" }
+        }
+      ]
+    },
+    "importance_scale": {
+      "id": "importance_scale",
+      "type": "static",
+      "version": "1.0.0",
+      "options": [
+        {
+          "id": "imp_001",
+          "value": "not-important",
+          "label": "Not Important",
+          "metadata": { "score": 1 }
+        },
+        {
+          "id": "imp_002",
+          "value": "somewhat-important",
+          "label": "Somewhat Important",
+          "metadata": { "score": 2 }
+        },
+        {
+          "id": "imp_003",
+          "value": "important",
+          "label": "Important",
+          "metadata": { "score": 3 }
+        },
+        {
+          "id": "imp_004",
+          "value": "very-important",
+          "label": "Very Important",
+          "metadata": { "score": 4 }
+        },
+        {
+          "id": "imp_005",
+          "value": "critical",
+          "label": "Critical",
+          "metadata": { "score": 5 }
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "totalAnswerSets": 5,
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  }
+}

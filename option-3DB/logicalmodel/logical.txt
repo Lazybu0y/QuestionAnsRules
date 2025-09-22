@@ -1,0 +1,60 @@
+// Conceptual data flow structure
+{
+  "questionnaire": {
+    "id": "product-recommendation",
+    "activeVersion": "1.2.0",
+    "versions": {
+      "1.2.0": {
+        "status": "active",
+        "questions": {
+          // Loaded dynamically from database
+        },
+        "rules": {
+          // Cached and compiled from database
+        }
+      }
+    }
+  }
+}
+
+// Runtime cache structure (Redis/Memory)
+{
+  "questionnaire:product-recommendation:v1.2.0": {
+    "questions": {
+      "q001": {
+        "id": "q001",
+        "type": "single-choice",
+        "text": "What is your primary use case?",
+        "level": 0,
+        "answerSetKey": "business-types",
+        "navigationRules": ["rule_001", "rule_002"]
+      }
+    },
+    "answerSets": {
+      "business-types": {
+        "type": "static",
+        "options": [...],
+        "cachedAt": "2024-01-15T10:30:00Z",
+        "ttl": 3600
+      }
+    },
+    "compiledRules": {
+      "navigation": {
+        "q001": [
+          {
+            "condition": "answer.value === 'business'",
+            "target": "q002",
+            "compiledFunction": "function(answer, context) { ... }"
+          }
+        ]
+      },
+      "evaluation": [
+        {
+          "condition": "answers.q001 === 'business' && answers.q003 > 100",
+          "stepId": "enterprise-plan",
+          "priority": 10
+        }
+      ]
+    }
+  }
+}

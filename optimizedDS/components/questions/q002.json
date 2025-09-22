@@ -1,0 +1,66 @@
+{
+  "component": {
+    "type": "question",
+    "id": "q002", 
+    "version": "1.0.0",
+    "lastModified": "2024-01-14T16:45:00Z",
+    "author": "ux-team"
+  },
+  "question": {
+    "id": "q002",
+    "type": "multiple-choice",
+    "level": 0,
+    "text": "Which of the following best describes your current challenges?",
+    "description": "Select all that apply. This helps us understand your pain points and recommend the most relevant features.",
+    "metadata": {
+      "category": "assessment",
+      "estimatedTime": 30,
+      "helpText": "You can select multiple options. Choose all that are relevant to your situation.",
+      "tags": ["challenges", "pain-points", "assessment"],
+      "analytics": {
+        "trackCombinations": true,
+        "trackOrderOfSelection": true,
+        "correlateWithOutcome": true
+      }
+    }
+  },
+  "answerSet": {
+    "reference": "business-challenges",
+    "validation": {
+      "required": true,
+      "minSelections": 1,
+      "maxSelections": 5,
+      "customRules": ["no_contradictory_selections"]
+    }
+  },
+  "display": {
+    "layout": "grid",
+    "columns": 2,
+    "showProgress": true,
+    "selectionCounter": true,
+    "customCSS": "multi-choice-grid"
+  },
+  "navigation": {
+    "allowBack": true,
+    "allowSkip": false,
+    "autoAdvance": false,
+    "nextRules": ["nav_budget_assessment"]
+  },
+  "conditions": {
+    "showIf": "true",
+    "requiredPrevious": ["q001"],
+    "blockingConditions": []
+  },
+  "dataProcessing": {
+    "aggregation": "array",
+    "scoring": {
+      "enabled": true,
+      "weightByMetadata": "severity",
+      "algorithm": "weighted_sum"
+    },
+    "enrichment": {
+      "addCategoryTags": true,
+      "calculateComplexityScore": true
+    }
+  }
+}

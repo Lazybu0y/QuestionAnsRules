@@ -1,0 +1,178 @@
+{
+  "component": {
+    "type": "rule-set",
+    "id": "business-flow-rules",
+    "version": "1.0.0",
+    "lastModified": "2024-01-15T09:15:00Z",
+    "author": "product-team"
+  },
+  "ruleSet": {
+    "id": "business-flow-rules",
+    "name": "Business User Flow Navigation Rules",
+    "description": "Navigation rules specific to business user journey",
+    "scope": "business-flow",
+    "category": "navigation"
+  },
+  "rules": [
+    {
+      "id": "nav_business_org_type",
+      "name": "Business Organization Type Routing",
+      "fromQuestion": "q001",
+      "priority": 10,
+      "condition": {
+        "expression": "answer.value === 'business' || answer.value === 'enterprise'",
+        "description": "Route business and enterprise users to company size assessment",
+        "dependencies": ["q001"]
+      },
+      "actions": [
+        {
+          "type": "navigate",
+          "target": "q003",
+          "data": {
+            "preloadAnswers": ["company-sizes"],
+            "setContext": {
+              "userSegment": "commercial",
+              "flowType": "business"
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "category": "primary-routing",
+        "expectedTriggerRate": "65%",
+        "businessImpact": "high",
+        "testCoverage": 100
+      }
+    },
+    {
+      "id": "nav_size_based_routing",
+      "name": "Company Size Based Routing",
+      "fromQuestion": "q003",
+      "priority": 9,
+      "condition": {
+        "expression": "parseInt(answer.metadata.weight) >= 3",
+        "description": "Large companies (weight >= 3) get comprehensive assessment",
+        "dependencies": ["q003"]
+      },
+      "actions": [
+        {
+          "type": "navigate",
+          "target": "q006",
+          "data": {
+            "preloadAnswers": ["enterprise-features"],
+            "setContext": {
+              "complexity": "high",
+              "assessmentType": "comprehensive"
+            },
+            "preloadApiData": {
+              "endpoint": "enterprise-requirements",
+              "params": {
+                "companySize": "{{answer.value}}"
+              }
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "category": "size-routing",
+        "expectedTriggerRate": "40%"
+      }
+    },
+    {
+      "id": "nav_small_business_simplified",
+      "name": "Small Business Simplified Flow",
+      "fromQuestion": "q003", 
+      "priority": 8,
+      "condition": {
+        "expression": "parseInt(answer.metadata.weight) < 3",
+        "description": "Smaller businesses get simplified assessment",
+        "dependencies": ["q003"]
+      },
+      "actions": [
+        {
+          "type": "navigate",
+          "target": "q005",
+          "data": {
+            "preloadAnswers": ["budget-ranges"],
+            "setContext": {
+              "complexity": "medium",
+              "assessmentType": "simplified"
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "category": "size-routing",
+        "expectedTriggerRate": "25%"
+      }
+    },
+    {
+      "id": "nav_budget_assessment",
+      "name": "Budget Assessment Trigger",
+      "fromQuestion": "q002",
+      "priority": 7,
+      "condition": {
+        "expression": "answer.some(challenge => challenge.metadata.category === 'financial')",
+        "description": "Users with financial challenges see budget questions",
+        "dependencies": ["q002"]
+      },
+      "actions": [
+        {
+          "type": "navigate",
+          "target": "q005",
+          "data": {
+            "setContext": {
+              "budgetSensitive": true,
+              "showValueProposition": true
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "category": "conditional-routing",
+        "expectedTriggerRate": "45%"
+      }
+    }
+  ],
+  "ruleGroups": {
+    "primary_business_routing": {
+      "rules": ["nav_business_org_type"],
+      "executionMode": "first_match",
+      "description": "Initial routing for business users"
+    },
+    "size_based_routing": {
+      "rules": ["nav_size_based_routing", "nav_small_business_simplified"],
+      "executionMode": "first_match",
+      "description": "Routes based on company size"
+    },
+    "conditional_routing": {
+      "rules": ["nav_budget_assessment"],
+      "executionMode": "all_applicable",
+      "description": "Additional conditional routing based on responses"
+    }
+  },
+  "performance": {
+    "ruleCompilation": true,
+    "cacheResults": true,
+    "parallelEvaluation": false
+  },
+  "testing": {
+    "testSuites": [
+      {
+        "name": "business_org_routing",
+        "scenarios": [
+          {
+            "input": {"q001": {"value": "business"}},
+            "expectedRule": "nav_business_org_type",
+            "expectedTarget": "q003"
+          },
+          {
+            "input": {"q001": {"value": "enterprise"}},
+            "expectedRule": "nav_business_org_type", 
+            "expectedTarget": "q003"
+          }
+        ]
+      }
+    ]
+  }
+}

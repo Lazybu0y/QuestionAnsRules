@@ -1,0 +1,133 @@
+{
+  "component": {
+    "type": "flow",
+    "id": "business-user-flow",
+    "version": "1.0.0",
+    "lastModified": "2024-01-15T10:15:00Z",
+    "author": "product-team"
+  },
+  "flow": {
+    "id": "business-user-flow",
+    "name": "Business User Journey Flow",
+    "description": "Optimized flow for business and enterprise users",
+    "scope": "business-segment",
+    "category": "user-journey"
+  },
+  "flowDefinition": {
+    "entryPoint": "q001",
+    "segments": {
+      "classification": {
+        "questions": ["q001", "q002"],
+        "description": "Initial user classification and challenge assessment",
+        "estimatedTime": 45,
+        "critical": true
+      },
+      "sizing_assessment": {
+        "questions": ["q003"],
+        "description": "Company size and scale assessment",
+        "estimatedTime": 10,
+        "conditional": true,
+        "condition": "answers.q001?.value === 'business' || answers.q001?.value === 'enterprise'"
+      },
+      "detailed_requirements": {
+        "questions": ["q006", "q007"],
+        "description": "Detailed business requirements",
+        "estimatedTime": 60,
+        "conditional": true,
+        "condition": "answers.q003?.metadata?.weight >= 3"
+      },
+      "budget_planning": {
+        "questions": ["q005"],
+        "description": "Budget and pricing considerations",
+        "estimatedTime": 15,
+        "conditional": true,
+        "condition": "answers.q002?.some(c => c.metadata?.category === 'financial')"
+      }
+    },
+    "paths": {
+      "enterprise_comprehensive": {
+        "description": "Full enterprise assessment path",
+        "questions": ["q001", "q002", "q003", "q006", "q007"],
+        "condition": "answers.q001?.value === 'enterprise'",
+        "estimatedTime": 130,
+        "expectedUsers": "25%"
+      },
+      "business_standard": {
+        "description": "Standard business user path",
+        "questions": ["q001", "q002", "q003", "q005"],
+        "condition": "answers.q001?.value === 'business'",
+        "estimatedTime": 70,
+        "expectedUsers": "40%"
+      },
+      "business_simplified": {
+        "description": "Simplified path for smaller businesses",
+        "questions": ["q001", "q002", "q005"],
+        "condition": "answers.q001?.value === 'business' && answers.q003?.metadata?.weight < 2",
+        "estimatedTime": 60,
+        "expectedUsers": "20%"
+      }
+    },
+    "optimization": {
+      "preloadStrategy": {
+        "aggressive": ["q001", "q002", "q003"],
+        "onDemand": ["q005", "q006", "q007"]
+      },
+      "caching": {
+        "answerSets": ["business-types", "business-challenges", "company-sizes"],
+        "ttl": 3600
+      },
+      "analytics": {
+        "trackSegments": true,
+        "measurePerformance": true,
+        "identifyDropoffPoints": true
+      }
+    }
+  },
+  "navigationRules": {
+    "ruleReferences": [
+      "nav_business_org_type",
+      "nav_size_based_routing", 
+      "nav_small_business_simplified",
+      "nav_budget_assessment"
+    ],
+    "fallbackBehavior": {
+      "noRuleMatch": "continue_linear",
+      "error": "show_error_recovery"
+    }
+  },
+  "evaluationRules": {
+    "ruleReferences": [
+      "eval_enterprise_tier",
+      "eval_security_focused_enterprise", 
+      "eval_business_plus",
+      "eval_cost_optimized_business"
+    ],
+    "fallbackRules": ["default_business"]
+  },
+  "userExperience": {
+    "progressIndicator": "segment-based",
+    "allowBackNavigation": true,
+    "saveProgress": true,
+    "responsiveDesign": true,
+    "accessibility": "WCAG-2.1-AA"
+  },
+  "businessRules": {
+    "segmentation": {
+      "primaryDimension": "organization_type",
+      "secondaryDimension": "company_size"
+    },
+    "personalization": {
+      "adaptiveQuestions": true,
+      "contextualHints": true,
+      "industrySpecific": false
+    }
+  },
+  "testing": {
+    "pathValidation": true,
+    "ruleConsistency": true,
+    "performanceBenchmarks": {
+      "maxLoadTime": "< 2s",
+      "maxMemoryUsage": "< 50MB"
+    }
+  }
+}

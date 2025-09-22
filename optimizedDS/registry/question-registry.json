@@ -1,0 +1,136 @@
+{
+  "registry": {
+    "name": "Question Registry",
+    "version": "1.0.0",
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  },
+  "questions": {
+    "q001": {
+      "id": "q001",
+      "file": "components/questions/q001.json",
+      "versions": ["1.0.0", "1.1.0"],
+      "status": "active",
+      "metadata": {
+        "type": "single-choice",
+        "level": 0,
+        "category": "classification",
+        "tags": ["root", "organization"],
+        "owner": "product-team",
+        "lastModified": "2024-01-15T09:30:00Z",
+        "dependencies": [],
+        "usedBy": ["business-user-flow", "personal-user-flow"],
+        "estimatedTime": 15
+      },
+      "validation": {
+        "schemaVersion": "2.0.0",
+        "lastValidated": "2024-01-15T10:00:00Z",
+        "validationStatus": "passed"
+      }
+    },
+    "q002": {
+      "id": "q002",
+      "file": "components/questions/q002.json",
+      "versions": ["1.0.0"],
+      "status": "active",
+      "metadata": {
+        "type": "multiple-choice",
+        "level": 0,
+        "category": "assessment",
+        "tags": ["challenges", "pain-points"],
+        "owner": "ux-team",
+        "lastModified": "2024-01-14T16:45:00Z",
+        "dependencies": [],
+        "usedBy": ["business-user-flow"],
+        "estimatedTime": 30
+      }
+    },
+    "q003": {
+      "id": "q003",
+      "file": "components/questions/q003.json",
+      "versions": ["1.0.0", "1.1.0"],
+      "status": "active",
+      "metadata": {
+        "type": "single-choice",
+        "level": 1,
+        "category": "sizing",
+        "tags": ["business", "company-size"],
+        "owner": "product-team",
+        "lastModified": "2024-01-15T08:15:00Z",
+        "dependencies": ["q001"],
+        "usedBy": ["business-user-flow"],
+        "estimatedTime": 10
+      }
+    },
+    "q004": {
+      "id": "q004",
+      "file": "components/questions/q004.json",
+      "versions": ["1.0.0"],
+      "status": "active",
+      "metadata": {
+        "type": "text",
+        "level": 1,
+        "category": "descriptive",
+        "tags": ["personal", "use-case"],
+        "owner": "content-team",
+        "lastModified": "2024-01-13T14:20:00Z",
+        "dependencies": ["q001"],
+        "usedBy": ["personal-user-flow"],
+        "estimatedTime": 60
+      }
+    },
+    "q005": {
+      "id": "q005",
+      "file": "components/questions/q005.json",
+      "versions": ["1.0.0"],
+      "status": "active",
+      "metadata": {
+        "type": "single-choice",
+        "level": 1,
+        "category": "budget",
+        "tags": ["pricing", "budget"],
+        "owner": "sales-team",
+        "lastModified": "2024-01-15T11:00:00Z",
+        "dependencies": ["q002"],
+        "usedBy": ["business-user-flow", "personal-user-flow"],
+        "estimatedTime": 15
+      }
+    }
+  },
+  "categories": {
+    "classification": {
+      "questions": ["q001"],
+      "description": "Questions that classify user types"
+    },
+    "assessment": {
+      "questions": ["q002"],
+      "description": "Questions that assess user needs and challenges"
+    },
+    "sizing": {
+      "questions": ["q003"],
+      "description": "Questions about organization size and scale"
+    },
+    "descriptive": {
+      "questions": ["q004"],
+      "description": "Free-form descriptive questions"
+    },
+    "budget": {
+      "questions": ["q005"],
+      "description": "Budget and pricing related questions"
+    }
+  },
+  "statistics": {
+    "totalQuestions": 5,
+    "activeQuestions": 5,
+    "deprecatedQuestions": 0,
+    "averageEstimatedTime": 26,
+    "questionsByLevel": {
+      "0": 2,
+      "1": 3
+    },
+    "questionsByType": {
+      "single-choice": 3,
+      "multiple-choice": 1,
+      "text": 1
+    }
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "navigationRules": {
+    "nav_rule_001": {
+      "id": "nav_rule_001",
+      "name": "Organization Type to Company Size",
+      "fromQuestion": "q001",
+      "level": 0,
+      "priority": 10,
+      "condition": {
+        "expression": "answer.value === 'business' || answer.value === 'enterprise'",
+        "description": "Route business and enterprise users to company size question"
+      },
+      "actions": [
+        {
+          "type": "navigate",
+          "target": "q003",
+          "data": {
+            "skipPreload": false,
+            "logTransition": true
+          }
+        }
+      ],
+      "metadata": {
+        "category": "primary-routing",
+        "estimatedUsers": "65%",
+        "lastModified": "2024-01-10T15:30:00Z"
+      }
+    },
+    "nav_rule_002": {
+      "id": "nav_rule_002",
+      "name": "Personal/Startup to Use Case Description",
+      "fromQuestion": "q001",
+      "level": 0,
+      "priority": 9,
+      "condition": {
+        "expression": "answer.value === 'personal' || answer.value === 'startup'",
+        "description": "Route personal and startup users to descriptive question"
+      },
+      "actions": [
+        {
+          "type": "navigate",
+          "target": "q004",
+          "data": {
+            "preloadAnswers": ["personal_use_cases"],
+            "skipPreload": false
+          }
+        }
+      ],
+      "metadata": {
+        "category": "primary-routing",
+        "estimatedUsers": "35%"
+      }
+    },
+    "nav_rule_003": {
+      "id": "nav_rule_003",
+      "name": "Challenges to Budget Assessment",
+      "fromQuestion": "q002",
+      "level": 0,
+      "priority": 8,
+      "condition": {
+        "expression": "answer.some(challenge => challenge.value === 'cost-optimization')",
+        "description": "Users mentioning cost optimization should see budget question"
+      },
+      "actions": [
+        {
+          "type": "navigate",
+          "target": "q005",
+          "data": {
+            "context": {
+              "costSensitive": true
+            }
+          }
+        }
+      ],
+      "metadata": {
+        "category": "conditional-routing",
+        "estimatedUsers": "45%"
+      }
+    }
+  },
+  "ruleGroups": {
+    "primary_classification": {
+      "rules": ["nav_rule_001", "nav_rule_002"],
+      "executionMode": "first_match",
+      "fallback": "q003"
+    },
+    "secondary_routing": {
+      "rules": ["nav_rule_003"],
+      "executionMode": "all_applicable",
+      "fallback": "continue_default_flow"
+    }
+  },
+  "defaultBehavior": {
+    "noMatchAction": "next_sequential",
+    "errorAction": "fallback_to_safe",
+    "loggingLevel": "info"
+  },
+  "metadata": {
+    "level": 0,
+    "ruleCount": 3,
+    "version": "1.0.0",
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  }
+}

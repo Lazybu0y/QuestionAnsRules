@@ -1,0 +1,159 @@
+{
+  "questions": {
+    "q001": {
+      "id": "q001",
+      "type": "single-choice",
+      "level": 0,
+      "text": "What type of organization are you representing?",
+      "description": "This helps us understand your primary use case and tailor the questionnaire accordingly.",
+      "answerSetId": "organization_types",
+      "validation": {
+        "required": true,
+        "customRules": []
+      },
+      "metadata": {
+        "category": "classification",
+        "estimatedTime": 15,
+        "helpText": "Select the option that best describes your organization",
+        "tags": ["root", "classification", "organization"]
+      },
+      "navigation": {
+        "allowBack": false,
+        "allowSkip": false,
+        "nextQuestionRules": ["nav_rule_001", "nav_rule_002"]
+      },
+      "display": {
+        "layout": "vertical",
+        "showProgress": true,
+        "animation": "fade-in"
+      }
+    },
+    "q002": {
+      "id": "q002",
+      "type": "multiple-choice",
+      "level": 0,
+      "text": "Which of the following best describes your current challenges?",
+      "description": "Select all that apply. This helps us understand your pain points.",
+      "answerSetId": "business_challenges",
+      "validation": {
+        "required": true,
+        "minSelections": 1,
+        "maxSelections": 5
+      },
+      "metadata": {
+        "category": "pain-points",
+        "estimatedTime": 30,
+        "tags": ["challenges", "multiple", "business"]
+      },
+      "navigation": {
+        "allowBack": true,
+        "allowSkip": false,
+        "nextQuestionRules": ["nav_rule_003"]
+      },
+      "display": {
+        "layout": "grid",
+        "columns": 2,
+        "showProgress": true
+      }
+    },
+    "q003": {
+      "id": "q003",
+      "type": "single-choice",
+      "level": 1,
+      "text": "What is your approximate company size?",
+      "description": "This helps us recommend the right tier for your organization.",
+      "answerSetId": "company_sizes",
+      "validation": {
+        "required": true
+      },
+      "conditions": [
+        {
+          "dependsOn": "q001",
+          "rule": "answer.value === 'business' || answer.value === 'enterprise'"
+        }
+      ],
+      "metadata": {
+        "category": "sizing",
+        "estimatedTime": 10,
+        "tags": ["business", "size", "tier"]
+      },
+      "navigation": {
+        "allowBack": true,
+        "allowSkip": false,
+        "nextQuestionRules": ["nav_rule_004", "nav_rule_005"]
+      }
+    },
+    "q004": {
+      "id": "q004",
+      "type": "text",
+      "level": 1,
+      "text": "Please describe your primary use case in a few sentences.",
+      "description": "The more specific you are, the better we can tailor our recommendation.",
+      "answerSetId": null,
+      "validation": {
+        "required": true,
+        "minLength": 10,
+        "maxLength": 500,
+        "customRules": ["no_spam_content"]
+      },
+      "conditions": [
+        {
+          "dependsOn": "q001",
+          "rule": "answer.value === 'personal' || answer.value === 'startup'"
+        }
+      ],
+      "metadata": {
+        "category": "use-case",
+        "estimatedTime": 60,
+        "tags": ["personal", "startup", "description"]
+      },
+      "navigation": {
+        "allowBack": true,
+        "allowSkip": true,
+        "nextQuestionRules": ["nav_rule_006"]
+      },
+      "display": {
+        "placeholder": "e.g., I need a solution to manage my personal projects and collaborate with 2-3 team members...",
+        "rows": 4,
+        "characterCounter": true
+      }
+    },
+    "q005": {
+      "id": "q005",
+      "type": "single-choice",
+      "level": 1,
+      "text": "What is your budget range for this solution?",
+      "description": "This helps us show you options within your price range.",
+      "answerSetId": "budget_ranges",
+      "validation": {
+        "required": true
+      },
+      "conditions": [
+        {
+          "dependsOn": "q001",
+          "rule": "true"
+        },
+        {
+          "dependsOn": "q002",
+          "rule": "answer.some(item => item.value === 'cost-optimization')"
+        }
+      ],
+      "metadata": {
+        "category": "budget",
+        "estimatedTime": 15,
+        "tags": ["budget", "pricing", "cost"]
+      },
+      "navigation": {
+        "allowBack": true,
+        "allowSkip": true,
+        "nextQuestionRules": ["nav_rule_007"]
+      }
+    }
+  },
+  "metadata": {
+    "fileVersion": "1.0.0",
+    "questionCount": 5,
+    "levelRange": [0, 1],
+    "lastModified": "2024-01-15T10:00:00Z"
+  }
+}

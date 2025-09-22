@@ -1,0 +1,234 @@
+{
+  "evaluationRules": {
+    "final_rule_001": {
+      "id": "final_rule_001",
+      "name": "Enterprise Tier Qualification",
+      "priority": 100,
+      "condition": {
+        "expression": "answers.q001?.value === 'enterprise' && parseInt(answers.q003?.value?.split('+')[0] || answers.q003?.value?.split('-')[1]) >= 500 && answers.q005?.metadata?.pricePoint !== 'low'",
+        "description": "Large enterprise with substantial budget"
+      },
+      "result": {
+        "stepId": "enterprise-premium",
+        "confidence": 0.95,
+        "reasoning": [
+          "Organization type: Enterprise",
+          "Company size: 500+ employees",
+          "Budget: Premium tier suitable"
+        ],
+        "metadata": {
+          "tier": "enterprise",
+          "pricing": "custom",
+          "salesHandoff": true
+        }
+      }
+    },
+    "final_rule_002": {
+      "id": "final_rule_002",
+      "name": "Business Plus Qualification",
+      "priority": 90,
+      "condition": {
+        "expression": "answers.q001?.value === 'business' && parseInt(answers.q003?.value?.split('-')[1]) >= 50 && answers.q002?.some(challenge => challenge.metadata?.severity === 'high')",
+        "description": "Medium business with high-severity challenges"
+      },
+      "result": {
+        "stepId": "business-plus",
+        "confidence": 0.88,
+        "reasoning": [
+          "Organization type: Business",
+          "Company size: 50+ employees",
+          "High-severity challenges identified"
+        ],
+        "metadata": {
+          "tier": "business-plus",
+          "pricing": "fixed",
+          "trialEligible": true
+        }
+      }
+    },
+    "final_rule_003": {
+      "id": "final_rule_003",
+      "name": "Startup Accelerator Program",
+      "priority": 85,
+      "condition": {
+        "expression": "answers.q001?.value === 'startup' && answers.q005?.value === 'under-100' && answers.q004?.length > 50",
+        "description": "Startup with detailed use case and low budget"
+      },
+      "result": {
+        "stepId": "startup-accelerator",
+        "confidence": 0.82,
+        "reasoning": [
+          "Organization type: Startup",
+          "Budget-conscious",
+          "Detailed use case provided"
+        ],
+        "metadata": {
+          "tier": "startup",
+          "pricing": "discounted",
+          "acceleratorProgram": true,
+          "mentorshipIncluded": true
+        }
+      }
+    },
+    "final_rule_004": {
+      "id": "final_rule_004",
+      "name": "Security-First Enterprise",
+      "priority": 95,
+      "condition": {
+        "expression": "answers.q002?.some(challenge => challenge.value === 'security-compliance') && (answers.q001?.value === 'business' || answers.q001?.value === 'enterprise')",
+        "description": "Organizations with security and compliance as primary concern"
+      },
+      "result": {
+        "stepId": "security-focused-enterprise",
+        "confidence": 0.92,
+        "reasoning": [
+          "Security & compliance identified as primary challenge",
+          "Commercial organization",
+          "Requires specialized security features"
+        ],
+        "metadata": {
+          "tier": "enterprise-security",
+          "pricing": "premium",
+          "complianceCertified": true,
+          "securityReview": true
+        }
+      }
+    },
+    "final_rule_005": {
+      "id": "final_rule_005",
+      "name": "Cost-Optimization Focus",
+      "priority": 75,
+      "condition": {
+        "expression": "answers.q002?.some(challenge => challenge.value === 'cost-optimization') && answers.q005?.metadata?.pricePoint === 'low'",
+        "description": "Budget-conscious organizations focusing on cost optimization"
+      },
+      "result": {
+        "stepId": "cost-optimized-business",
+        "confidence": 0.78,
+        "reasoning": [
+          "Cost optimization is primary challenge",
+          "Budget constraints indicated",
+          "Value-focused recommendation needed"
+        ],
+        "metadata": {
+          "tier": "business-lite",
+          "pricing": "value",
+          "costOptimizationTools": true
+        }
+      }
+    },
+    "final_rule_006": {
+      "id": "final_rule_006",
+      "name": "Personal Professional",
+      "priority": 60,
+      "condition": {
+        "expression": "answers.q001?.value === 'personal' && answers.q004?.toLowerCase().includes('professional')",
+        "description": "Personal use but with professional requirements"
+      },
+      "result": {
+        "stepId": "personal-pro",
+        "confidence": 0.71,
+        "reasoning": [
+          "Personal use case",
+          "Professional requirements mentioned",
+          "Individual user with advanced needs"
+        ],
+        "metadata": {
+          "tier": "personal-pro",
+          "pricing": "individual",
+          "professionalFeatures": true
+        }
+      }
+    }
+  },
+  "fallbackRules": {
+    "default_business": {
+      "condition": "answers.q001?.value === 'business'",
+      "stepId": "business-standard",
+      "confidence": 0.5,
+      "reasoning": ["Default business recommendation"]
+    },
+    "default_personal": {
+      "condition": "answers.q001?.value === 'personal'",
+      "stepId": "personal-basic",
+      "confidence": 0.5,
+      "reasoning": ["Default personal recommendation"]
+    },
+    "ultimate_fallback": {
+      "condition": "true",
+      "stepId": "discovery-call",
+      "confidence": 0.3,
+      "reasoning": ["Unable to determine best fit - schedule consultation"]
+    }
+  },
+  "stepDefinitions": {
+    "enterprise-premium": {
+      "name": "Enterprise Premium Plan",
+      "description": "Full-featured enterprise solution with premium support",
+      "features": ["unlimited_users", "priority_support", "custom_integrations", "dedicated_success_manager"],
+      "pricing": "custom"
+    },
+    "business-plus": {
+      "name": "Business Plus Plan",
+      "description": "Advanced business features with enhanced support",
+      "features": ["up_to_100_users", "advanced_analytics", "api_access", "priority_support"],
+      "pricing": "$299/month"
+    },
+    "startup-accelerator": {
+      "name": "Startup Accelerator Program",
+      "description": "Special pricing and support for qualifying startups",
+      "features": ["up_to_25_users", "startup_resources", "mentorship", "community_access"],
+      "pricing": "$49/month (90% discount)"
+    },
+    "security-focused-enterprise": {
+      "name": "Security-First Enterprise",
+      "description": "Enterprise solution with enhanced security and compliance features",
+      "features": ["security_audit", "compliance_reporting", "sso_integration", "data_encryption"],
+      "pricing": "custom"
+    },
+    "cost-optimized-business": {
+      "name": "Cost-Optimized Business",
+      "description": "Essential business features at an optimized price point",
+      "features": ["up_to_50_users", "basic_analytics", "cost_monitoring", "efficiency_tools"],
+      "pricing": "$99/month"
+    },
+    "personal-pro": {
+      "name": "Personal Professional",
+      "description": "Professional-grade features for individual users",
+      "features": ["unlimited_projects", "advanced_features", "priority_support"],
+      "pricing": "$29/month"
+    },
+    "business-standard": {
+      "name": "Business Standard",
+      "description": "Standard business plan with core features",
+      "features": ["up_to_50_users", "standard_support", "basic_integrations"],
+      "pricing": "$149/month"
+    },
+    "personal-basic": {
+      "name": "Personal Basic",
+      "description": "Basic plan for personal use",
+      "features": ["up_to_3_projects", "basic_features", "community_support"],
+      "pricing": "$9/month"
+    },
+    "discovery-call": {
+      "name": "Discovery Call",
+      "description": "Schedule a consultation to find the best fit",
+      "features": ["personalized_consultation", "custom_recommendation", "implementation_guidance"],
+      "pricing": "free_consultation"
+    }
+  },
+  "evaluationConfig": {
+    "executionOrder": "priority_desc",
+    "stopOnFirstMatch": true,
+    "requireMinimumConfidence": 0.6,
+    "logAllEvaluations": true,
+    "enableFallback": true
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "ruleCount": 6,
+    "fallbackCount": 3,
+    "stepCount": 9,
+    "lastUpdated": "2024-01-15T10:00:00Z"
+  }
+}

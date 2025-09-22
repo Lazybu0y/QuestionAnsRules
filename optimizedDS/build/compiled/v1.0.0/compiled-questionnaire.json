@@ -1,0 +1,85 @@
+{
+  "compiledQuestionnaire": {
+    "version": "1.0.0",
+    "buildId": "build-1704067200",
+    "compiledAt": "2024-01-15T10:00:00Z",
+    "sourceComposition": "v1.0.0-composition.json"
+  },
+  "optimizedStructure": {
+    "questions": {
+      "q001": {
+        "id": "q001",
+        "type": "single-choice",
+        "text": "What type of organization are you representing?",
+        "level": 0,
+        "answerSetRef": "business-types",
+        "nextRuleIds": ["compiled_nav_rule_001", "compiled_nav_rule_002"],
+        "precomputedPaths": {
+          "business": ["q002", "q003"],
+          "enterprise": ["q002", "q003"],
+          "personal": ["q004"],
+          "startup": ["q004"]
+        }
+      }
+    },
+    "compiledRules": {
+      "navigation": {
+        "compiled_nav_rule_001": {
+          "id": "compiled_nav_rule_001",
+          "fromQuestion": "q001",
+          "compiledCondition": "function(answer, context) { return answer.value === 'business' || answer.value === 'enterprise'; }",
+          "target": "q003",
+          "priority": 10,
+          "executionTimeMs": 0.1
+        }
+      },
+      "evaluation": {
+        "compiled_eval_rule_001": {
+          "id": "compiled_eval_rule_001",
+          "compiledCondition": "function(answers, context) { return answers.q001?.value === 'enterprise' && parseInt(answers.q003?.metadata?.weight || 0) >= 4; }",
+          "result": {
+            "stepId": "enterprise-premium",
+            "confidence": 0.95
+          },
+          "priority": 100
+        }
+      }
+    },
+    "preloadedAnswerSets": {
+      "business-types": {
+        "options": [
+          {
+            "id": "org_business",
+            "value": "business", 
+            "label": "Business (SMB)",
+            "metadata": {"tier": "business", "weight": 2}
+          }
+        ]
+      }
+    }
+  },
+  "optimizationResults": {
+    "ruleCompilation": {
+      "rulesCompiled": 12,
+      "averageExecutionTime": "0.15ms",
+      "memoryReduction": "40%"
+    },
+    "bundleSize": {
+      "originalSize": "2.4MB",
+      "optimizedSize": "1.1MB",
+      "compressionRatio": "54%"
+    },
+    "loadPerformance": {
+      "estimatedLoadTime": "1.2s",
+      "criticalPathOptimized": true,
+      "cacheHitRate": "85%"
+    }
+  },
+  "metadata": {
+    "sourceFiles": 15,
+    "totalQuestions": 5,
+    "totalRules": 12,
+    "totalAnswerSets": 4,
+    "checksumMD5": "f1e2d3c4b5a6"
+  }
+}
